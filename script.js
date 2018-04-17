@@ -12,6 +12,10 @@ var lastKey = 0;
 var monster1=new Object();
 var monster2=new Object();
 var monster3=new Object();
+
+var flagForMonster = 0;
+var flagForTreat = 0;
+
 $(document).ready(function() {
     canvas = document.getElementById('canvas');
     context = canvas.getContext("2d");    
@@ -42,6 +46,8 @@ function start(){
                 board[i][j] = 3;
             }
             else if(i==0 && j==9){ // Treat
+                treat.i=i;
+                treat.j=j;
                 board[i][j] = 5;
             }            
             else{
@@ -79,10 +85,6 @@ function start(){
     setInterval(UpdateTreat, 200);
 }
 
-/***create the board game***/
-
-/** put walls in the board */
-
 /***fill up the board***/
 function findRandomEmptyCell(board){
     var i = Math.floor((Math.random() * 9) + 1);
@@ -94,6 +96,7 @@ function findRandomEmptyCell(board){
     }
     return [i,j];             
     }
+
 /***return the key pressed */
 function GetKeyPressed() {
     if (keysDown[38]) {
@@ -282,57 +285,84 @@ function UpdatePosition() {
     }
 }
     function UpdatePositionForMonster() {
-        var xDistance = (shape.i - monster1.i);
-        var yDistance = (shape.j - monster1.j);
-        board[monster1.i][monster1.j]=0;
-        if(Math.abs(xDistance) >= Math.abs(yDistance)){
-            if(xDistance < 0 && board[monster1.i-1][monster1.j]!=4){
-                monster1.i--;
-            }
-            else if(xDistance > 0 && board[monster1.i+1][monster1.j]!=4){  //TODO: what if =0
-                monster1.i++;
-            }
-            else if(board[monster1.i-1][monster1.j]==4 || board[monster1.i+1][monster1.j]==4){
-                if(yDistance < 0 && board[monster1.i][monster1.j-1]!=4){
-                    monster1.j--;
-                }
-                else if(xDistance > 0 && board[monster1.i][monster1.j+1]!=4){  //TODO: what if =0
-                    monster1.j++;
-                }
-            }            
+
+        board[monster1.i][monster1.j]=flagForMonster;        
+        var distance = 10000;
+        var temp;
+        var move;
+        
+        if(monster1.i>0 && board[monster1.i-1][monster1.j] < 4 ){ //left
+            distance = Math.abs(shape.i - (monster1.i-1)) + Math.abs(shape.j - monster1.j);
+            move = [monster1.i-1, monster1.j];
         }
-        else {
-            if(yDistance < 0 && board[monster1.i][monster1.j-1]!=4){
-                monster1.j--;
+
+        if(monster1.i<9 && board[monster1.i+1][monster1.j] < 4 ){ //right
+            temp = Math.abs(shape.i - (monster1.i+1)) + Math.abs(shape.j - monster1.j);
+            if(temp<distance){
+                distance = temp;
+                move = [monster1.i+1, monster1.j];
             }
-            else if(xDistance > 0 && board[monster1.i][monster1.j+1]!=4){  //TODO: what if =0
-                monster1.j++;
+        }
+
+        if(monster1.j>0 && board[monster1.i][monster1.j-1] < 4 ){ //up
+            temp = Math.abs(shape.i - monster1.i) + Math.abs(shape.j - (monster1.j-1));
+            if(temp<distance){
+                distance = temp;
+                move = [monster1.i, monster1.j-1];
             }
-            else if(board[monster1.i][monster1.j-1]==4 || board[monster1.i][monster1.j+1]==4){
-                if(xDistance < 0 && board[monster1.i-1][monster1.j]!=4){
-                    monster1.i--;
-                }
-                else if(xDistance > 0 && board[monster1.i+1][monster1.j]!=4){  //TODO: what if =0
-                    monster1.i++;
-                }
+        }
+
+        if(monster1.j<9 && board[monster1.i][monster1.j+1] < 4 ){ //down
+            temp = Math.abs(shape.i - monster1.i) + Math.abs(shape.j - (monster1.j+1));
+            if(temp<distance){
+                distance = temp;
+                move = [monster1.i, monster1.j+1];
             }
-        }  
+        }
+        
+        monster1.i = move[0];
+        monster1.j = move[1];
+        if(board[monster1.i][monster1.j] == 1){
+            flagForMonster = 1;
+        }
+        else{
+            flagForMonster = 0;
+        }
+
         board[monster1.i][monster1.j]=3;
     }
 
     function UpdateTreat(){
-        var flag = false;
-        board[treat.i][treat.j]=0;
-        var rand = Math.random();
-        if(rand<0.25 && board[treat.i-1][treat.j]!=4){
-            treat.i--;
+        var flag = true;
+        
+        board[treat.i][treat.j]=flagForTreat;
+        
+        while(flag){
+            var rand = Math.random();
+            if(treat.i>0 && rand<0.25 && board[treat.i-1][treat.j]!=4){
+                treat.i--;
+                flag = false;
+            }
+            if(treat.i<9 && rand>=0.25 && rand<0.5 && board[treat.i+1][treat.j]!=4){
+                treat.i++;
+                flag = false;
+            }
+            if(treat.j>0 && rand>=0.5 && rand<0.75 && board[treat.i][treat.j-1]!=4){
+                treat.j--;
+                flag = false;
+            }
+            if(treat.j<9 && rand>=0.75 && board[treat.i][treat.j+1]!=4){
+                treat.j++;
+                flag = false;
+            }
         }
-        if(rand>=0.25 && rand<0.5 && board[treat.i+1][treat.j]!=4){
-            treat.i++;
+        if(board[treat.i][treat.j] == 1){
+            flagForTreat = 1;
         }
-        if(rand>=0.25 && rand<0.5 && board[treat.i+1][treat.j]!=4){
-            treat.i++;
+        else{
+            flagForTreat = 0;
         }
+        board[treat.i][treat.j]=5;
     }
 
 
