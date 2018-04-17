@@ -29,6 +29,10 @@ function Start() {
             {
                 board[i][j] = 4;
             }
+            if((i==0 && j==0)||(i==0 && j==10)||(i==10 && j==10)||(i==10 && j==0))
+            {
+                board[i][j] = 3;
+            }
             else{
             var randomNum = Math.random();
             if (randomNum <= 1.0 * food_remain / cnt) {
@@ -44,8 +48,9 @@ function Start() {
             }
             cnt--;
             }
-            }
+        }        
     }
+    
     while(food_remain>0){
         var emptyCell = findRandomEmptyCell(board);
         board[emptyCell[0]][emptyCell[1]] = 1;
@@ -60,6 +65,10 @@ function Start() {
     }, false);
     interval=setInterval(UpdatePosition, 250);
 }
+
+/** put walls in the board */  Todo: //function like this
+
+
 
 /***fill up the board***/
 function findRandomEmptyCell(board){
@@ -105,6 +114,9 @@ function Draw() {
             else if (board[i][j] == 4) {
                 DrawWalls();
             }
+            else if (board[i][j] == 3) {
+                DrawMonster();
+            }
         }
     }  
 }
@@ -137,6 +149,14 @@ function DrawWalls() {
     context.fillStyle = "grey"; //color 
     context.fill();
 }
+/** draw monster */
+function DrawMonster(){
+    context.beginPath();
+    context.rect(center.x-30, center.y-30, 40, 40);
+    context.arc(center.x + 5, center.y - 15, 5, 0, 2 * Math.PI);
+    context.fillStyle = "red";
+}
+
 /***updtate the position */
 function UpdatePosition() {
     board[shape.i][shape.j]=0;
