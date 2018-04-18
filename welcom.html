@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html>
-    
-    <head>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script type="text/javascript" src="script.js"></script> 
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    
-    <body>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <div class="welcome">
         <header>
-                <img class="header_item" src="Pac-Man.svg" alt="Pac-Man">
-                <h1 class="header_item">Pacman Game</h1>
-                <h2 class="header_item">Sivan Rejensky and Ron Shmulinson</h2>
+            <img class="header_item" src="Pac-Man.svg" alt="Pac-Man">
+            <h1 class="header_item">Pacman Game</h1>
+            <h2 class="header_item">Sivan Rejensky and Ron Shmulinson</h2>
         </header>
         <!-- The video -->
         <video autoplay muted loop id="myVideo">
                 <source src="Pac-Man.mp4" type="video/mp4">
                 Your browser does not support HTML5 video.
                </video>
-        <center><div class="header">
+        <div class="header">
 
             <!-- buttons -->
       <div class="content">
@@ -31,7 +32,31 @@
                 <button id="sign_up" onclick="">Sign Up</button>
             </div>
           </div>
-        </div></center>
-    </body>
+        </div>
+    </div>
+    <div id="login-page" class="section">
+            <form id="login-form" class="form">
+                <input type="text" placeholder="username"/>
+                <input type="password" placeholder="password"/>
+                <button>login</button>
+                <p class="message">Not registered? <a href="#">Create an account</a></p>
+            </form>
+    </div>
+    <div id="sign_up_page" class="section">
+        <form id="register-form" class="form">
+            <input type="text" placeholder="name"/>
+            <input type="password" placeholder="password"/>
+            <input type="text" placeholder="email address"/>
+            <button>create</button>
+            <p class="message">Already registered? <a href="#">Sign In</a></p>
+        </form>
+    </div>
+
+    <script>
+        $('.message a').click(function(){
+            $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+        });
+    </script>
+</body>
 
 </html>
