@@ -1,146 +1,208 @@
-header {
-    color: white;
-    position: fixed;
-	width: 100%;
-	margin: auto;
-	display: inline-block;
-    background-color: black;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1)!important;
-}
-
-.header_item {
-    text-align: center;
-	display: inline-block;
-	vertical-align: bottom;
-    width: 33%;
-    max-height: 50px;
-    padding: 10px 0 10px 0;
-}
-
 body {
-    background-color: black;
+background-color: black;
 }
 
-/* Style the video: 100% width and height to cover the entire window */
-#myVideo {
-    position: fixed;
-	right: 0;
-	bottom: 0;
-	min-width: 100%;
-	min-height: 100%;
-	width: 100vh;
-	height: 100vh;
-	background: rgba(0, 0, 0, 0.5);
-	color: #f1f1f1;
-	z-index: -30;
-	background-color: black;
+.wrapper {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    position: relative;
 }
-.main_button {
+.page {
+    position: relative;
+    display: block;
+    margin: 0;
+}
+.welcome-header-item img{
+    width: 33.333%;
     display: inline-block;
-    width: 40%;
 }
-.main_button button{
-    width: 100px;
-    cursor: pointer;
+.welcome-header-item::before {
+    content: '';
+    min-width: 33.333%;
+    display: inline-block;
+}
+.navlink {
     color: white;
-    font-family: "Montserrat", sans-serif;
+    text-decoration: none;
+    font-family:"Montserrat", sans-serif;
+    text-align: center;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 20%;
+}
+.navlink::before {
+    content: '';
+    min-width: 30%;
+    display: inline-block;
+}
+
+
+.navlink a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    font-family: "Jua", sans-serif;
+}
+
+.navlink a:hover {
+    color: grey;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.video_container{
+    margin-top: 5%;
+    overflow:hidden;
+    display:block;
+    height: 100px;
+}
+#myVideo{
+    margin-top: -100px;
+    margin-bottom: -100px;
+    margin-left: 30%;
+}
+
+.main-button {
+    content: '';
+    text-align: center;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 45%;
+}
+.main-button button{
+    border: none;
+    cursor: pointer;
+    color: #b7b7b7;
+    font-family: "Jua", sans-serif;
     padding: 10px;
-    border: medium solid white;
-    border-radius: 2px;
+    font-size: 20pt;
     margin: 50px;
     background-color: rgba(0,0,0,.1);
 }
-.content {
-    width: 100%;
-    position: relative;
-    padding: 100px;
-	display: block;
-	content: '';
-	min-height: 100%;
-	height: 100vh;
-	z-index: 20;
+.main-button button:hover {
     color: white;
 }
+/* About design */
+.about {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    z-index: 30;
+    padding-top: 100px;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    overflow: auto;
 
+}
+
+/* Modal Content */
+.about-content {
+    color: #000000;
+    font-family: "Jua", sans-serif;
+    width: 90%;
+    background-color: white;
+    margin: auto;
+    padding: 20px;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    box-sizing: border-box;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
 /*form design*/
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-.section {
-    width: 360px;
-    padding: 8% 0 0;
-    margin: auto;
-    background: #76b852; /* fallback for old browsers */
-    background: -webkit-linear-gradient(right, #76b852, #8DC26F);
-    background: -moz-linear-gradient(right, #76b852, #8DC26F);
-    background: -o-linear-gradient(right, #76b852, #8DC26F);
-    background: linear-gradient(to left, #76b852, #8DC26F);
-    font-family: "Roboto", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+.login-h {
+    color: white;
+    text-align: center;
+    font-family:"Jua", sans-serif;
+    font-size: 18px;
 }
+
 .form {
+    display: block;
     position: relative;
     z-index: 1;
     background: #FFFFFF;
-    max-width: 360px;
+    max-width: 400px;
     margin: 0 auto 100px;
     padding: 45px;
     text-align: center;
     box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+    box-sizing: border-box;
+
 }
 .form input {
-    font-family: "Roboto", sans-serif;
-    outline: 0;
+    font-family: "Jua", sans-serif;
     background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.form img {
     width: 100%;
     border: 0;
     margin: 0 0 15px;
     padding: 15px;
     box-sizing: border-box;
-    font-size: 14px;
+    max-height: 100px;
 }
+
 .form button {
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-    outline: 0;
-    background: #4CAF50;
+    font-family: "Jua", sans-serif;
     width: 100%;
     border: 0;
     padding: 15px;
+    margin: 5px;
     color: #FFFFFF;
     font-size: 14px;
-    -webkit-transition: all 0.3 ease;
-    transition: all 0.3 ease;
-    cursor: pointer;
-}
-.form button:hover,.form button:active,.form button:focus {
-    background: #43A047;
-}
-.form .message {
-    margin: 15px 0 0;
-    color: #b3b3b3;
-    font-size: 12px;
-}
-.form .message a {
-    color: #4CAF50;
-    text-decoration: none;
-}
-.form .register-form {
-    display: none;
-}
-.section {
-    position: relative;
-    z-index: 1;
-    max-width: 300px;
-    margin: 0 auto;
-}
-.section:before, .container:after {
-    content: "";
-    display: block;
-    clear: both;
-}
-.section {
-    margin: 50px auto;
-    text-align: center;
 }
 
+#login button {
+    background: #EF3B3A;
+}
+#sign-up button {
+    background: #31efbb;
+}
+#login button:hover,.form button:active,.form button:focus {
+    background: #ef2621;
+}
+.message {
+    margin: 15px;
+    color: #b3b3b3;
+    box-sizing: border-box;
+}
+#login .message a {
+    color: #EF3B3A;
+    text-decoration: none;
+}
+
+#sign-up .message a {
+    color: #31efbb;
+    text-decoration: none;
+}
+
+.error-message {
+    color: red;
+    font-family: "Jua", sans-serif;
+}
