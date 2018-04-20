@@ -1,3 +1,4 @@
+/*general design*/
 body {
 background-color: black;
 }
@@ -13,6 +14,7 @@ background-color: black;
     display: block;
     margin: 0;
 }
+/*welcom page design */
 .welcome-header-item img{
     width: 33.333%;
     display: inline-block;
@@ -22,7 +24,11 @@ background-color: black;
     min-width: 33.333%;
     display: inline-block;
 }
+
+/*nav section design */
 .navlink {
+    position: relative;
+    height: 100%;
     color: white;
     text-decoration: none;
     font-family:"Montserrat", sans-serif;
@@ -30,6 +36,7 @@ background-color: black;
     display: inline-block;
     vertical-align: bottom;
     width: 20%;
+    padding: 10px;
 }
 .navlink::before {
     content: '';
@@ -51,6 +58,12 @@ background-color: black;
     text-decoration: none;
 }
 
+nav {
+    position: relative;
+    display: block;
+    height: 15%;
+}
+/* video design */
 .video_container{
     margin-top: 5%;
     overflow:hidden;
@@ -63,6 +76,7 @@ background-color: black;
     margin-left: 30%;
 }
 
+/* login / sign up button design */
 .main-button {
     content: '';
     text-align: center;
@@ -83,6 +97,52 @@ background-color: black;
 .main-button button:hover {
     color: white;
 }
+/* enter the game page design */
+#enter-game {
+    position: relative;
+    height: 100vh;
+}
+#logo-section {
+    position: relative;
+    display: block;
+    max-height: 40%;
+    padding:5%;
+}
+#logo-section img {
+    width: 30%;
+    display: inline-block;
+}
+#button-section {
+    content: '';
+    text-align: center;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 65%;
+}
+#button-section button {
+    border: none;
+    cursor: pointer;
+    color: #b7b7b7;
+    font-family: "Jua", sans-serif;
+    padding: 10px;
+    font-size: 30pt;
+    margin: 50px;
+    background-color: rgba(0,0,0,.1);
+}
+
+#button-section button:hover {
+    color: white;
+}
+#button-section::before {
+    content: '';
+    min-width: 50%;
+    display: inline-block;
+}
+#logo-section::before{
+    content: '';
+    min-width: 33.333%;
+    display: inline-block;
+}
 /* About design */
 .about {
     position: fixed;
@@ -97,7 +157,7 @@ background-color: black;
 
 }
 
-/* Modal Content */
+/* About Content */
 .about-content {
     color: #000000;
     font-family: "Jua", sans-serif;

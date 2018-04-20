@@ -28,6 +28,7 @@
             <p>Sivan Rejensky - ID: 308465954</p>
         </div>
     </div>
+
     <!-- Welcome Page -->
     <div id="welcome" class="page">
         <div class="welcome-header">
@@ -52,15 +53,23 @@
             </div>
         </div>
     </div>
-
+    <!-- prepare to play the game page -->
+    <div id="enter-game" class="page">
+        <div id="logo-section">
+            <img src="Pac-Man-logo.svg" alt="Pac-Man-logo">
+        </div>
+        <div id="button-section" class="main-button">
+            <button id="new-game-button" onclick="toggle('welcome');">New Game</button>
+        </div>
+    </div>
     <!--Login Page-->
     <div id="login" class="page">
         <h1 class="login-h">Log In!</h1>
         <form id="login-form" class="form" action="#sign-up">
             <img id="monster1-pic" class="monster-pic" src="monster1.svg" alt="monster">
             <span id="login-error" class="error-message"></span>
-            <input type="text" placeholder="username" required/>
-            <input type="password" placeholder="password" required/>
+            <input type="text" placeholder="Username" required/>
+            <input type="password" placeholder="Password" required/>
             <button>Login</button>
             <p class="message">Not registered? <a href="#" onclick="toggle('sign-up');">Create an account</a></p>
         </form>
@@ -70,17 +79,18 @@
         <h1 class="login-h">Sign Up!</h1>
         <form id="register-form" class="form">
             <img id="monster2-pic" class="monster-pic" src="monster2.svg" alt="monster">
-            <input type="text" id="uname-input" name="username" placeholder="User Name" required/>
+            <input type="text" id="uname-input" name="username" placeholder="Username" required/>
             <span id="uname-error" class="error-message"></span>
-            <input type="password" id="pass-input" name="password" placeholder="password" required/>
+            <input type="password" id="pass-input" name="password" placeholder="Password" required/>
             <span id="pass-error" class="error-message"></span>
             <input type="text" id="fname-input" name="fname" placeholder="First Name" required/>
             <span id="fname-error" class="error-message"></span>
             <input type="text" id="lname-input" name="lname" placeholder="Last Name" required/>
             <span id="lname-error" class="error-message"></span>
             <input type="email" id="email-input" placeholder="Email Address" required/>
-            <span id="email-error" class="error-message"></span>
-            <input type="date" id="date-input" required/>
+            <span style="display:block" id="email-error" class="error-message"></span>
+            <span style="color: grey; text-align: left; display: inline; font-family: 'Jua', sans-serif; width:auto">Date Of Birth: </span>
+            <input type="date" id="date-input" style="display: inline; width: auto;" required/>
             <button type="submit">Sign Up</button>
             <p class="message">Already registered? <a href="#" onclick="toggle('login');">Sign In</a></p>
         </form>
@@ -142,7 +152,7 @@ function check_username() {
         }
     }
     if(isExist) {
-        $("#uname-error").html("Username is already exist");
+        $("#uname-error").html("Username is already taken");
         $("#uname-error").show();
         uError = true;
     } else {
@@ -228,12 +238,12 @@ function check_login() {
 $("#login-form").submit(function() {
     if (check_login()) {
         document.getElementById("login-form").reset();
-        toggle('welcome');
+        toggle('enter-game');
         $("#login-error").hide();
         $("nav").show();
         return false;
     } else {
-        $("#login-error").html("Username or password is incorrect, or user does not exist");
+        $("#login-error").html("Invalid username or password");
         $("#login-error").show();
         return false;
     }
@@ -293,7 +303,7 @@ function getRegisterValues() {
     userArray.push(newUser);
     updateCurrentUser(newUser);
     document.getElementById("register-form").reset();
-    toggle('welcome');
+    toggle('enter-game');
 }
 
 function updateCurrentUser(newUser) {
