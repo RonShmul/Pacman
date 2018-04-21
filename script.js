@@ -18,7 +18,7 @@ var lastKey = 0;
 var monster1;
 var monster2;
 var monster3;
-var flagForTreat = 0;
+var flagForTreat;
 var numOfMonsters;
 var numOfPoints;
 var time;
@@ -41,13 +41,12 @@ function start(){
     score = 0;
     pac_color="gold";
     var cnt = 100;
-    // var food_remain = 50;
-    // var pacman_remain = 1;
     start_time= new Date();
     life = 3;
+    flagForTreat = false;
     numOfMonsters = monsterInput.value;
     numOfPoints = pointInput.value;
-    time = timeInput.value;
+    time = parseInt(timeInput.value);
     //initial life if needed
     restoreLife();
     //initial the board with zeros
@@ -99,6 +98,8 @@ function start(){
         keysDown[e.keyCode] = false;
     }, false);
     interval=setInterval(UpdatePosition, 100);
+    intervalAid = setInterval(setLifeAdder, 100);
+    intervalClock = setInterval(setTimeAdder, 100);
     intervalMon1 = setInterval( UpdatePositionForMonster1, 400);
     if(numOfMonsters >= 2){
         intervalMon2 = setInterval( UpdatePositionForMonster2, 400);
@@ -112,10 +113,12 @@ function start(){
 function placeSpecials(){
     monster1.i = 0;
     monster1.j = 0;
-    treat.i = 9;
-    treat.j = 9;
+    if(!flagForTreat){
+        treat.i = 9;
+        treat.j = 9;
+        board[9][9] = 5;
+    }
     board[0][0] = 3;
-    board[9][9] = 5;
     if(numOfMonsters >= 2){
         monster2.i = 0;
         monster2.j = 9;
@@ -202,8 +205,6 @@ function Draw() {
     canvas.width=canvas.width; //clean board
     lblScore.value = score;
     lblTime.value = time_elapsed;
-    lblLife.value = life;
-    var monCount =1;
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 10; j++) {
             var center = new Object();
@@ -216,16 +217,22 @@ function Draw() {
                 DrawWalls(center);
             }
             else if(board[i][j] == 3){
-                var pic = "monster" + monCount + ".svg";
-                DrawMonster(center, pic);
-                monCount++;
+                if(monster1.i == i && monster1.j == j){
+                    DrawMonster(center, "monster1.svg");
+                }
+                if(monster2.i == i && monster2.j == j){
+                    DrawMonster(center, "monster2.svg");
+                }
+                if(monster3.i == i && monster3.j == j){
+                    DrawMonster(center, "monster3.svg");
+                }
             }
             else if(board[i][j] == 5){
                 DrawTreat(center);
             }
             else if (pointsBoard[i][j] == 1) {   //TODO: change everything wth snacks!!!
                 var fill = "white";
-                var size = 10;
+                var size = 9;
                 DrawSnacks(center, fill, size);
             }
             else if (pointsBoard[i][j] == 6) {
@@ -235,12 +242,18 @@ function Draw() {
             }
             else if (pointsBoard[i][j] == 7) {
                 var fill = "RosyBrown";
-                var size = 16;
+                var size = 18;
                 DrawSnacks(center, fill, size);
             }
+            else if (pointsBoard[i][j] == 8) {
+                DrawAid(center);
+            }
+            else if (pointsBoard[i][j] == 9) {
+                DrawClock(center);
             }
         }
     }
+}
 
 /**draw Pacman */
 function DrawPacman(center) {
@@ -324,10 +337,27 @@ function DrawMonster(center , pic){
 function DrawTreat(center){
     context.beginPath();
     var img = new Image();
+    img.src = "candy.png";
+    img.onload = function () {
+        context.drawImage(img, center.x-30, center.y-30 , 35 , 60);
+    }
+}
+
+function DrawAid(center) {
+    context.beginPath();
+    var img = new Image();
+    img.src = "aid.svg";
     img.onload = function () {
         context.drawImage(img, center.x-30, center.y-30 , 55 , 55);
     }
-    img.src = "money.png";
+}
+function DrawClock(center) {
+    context.beginPath();
+    var img = new Image();
+    img.src = "clock.svg";
+    img.onload = function () {
+        context.drawImage(img, center.x-30, center.y-30 , 55 , 55);
+    }
 }
 
 /***update the position */
@@ -377,19 +407,22 @@ function UpdatePosition() {
     }
     if(board[pacman.i][pacman.j]==5)
     {
-        board[pacman.i][pacman.j] = 0;
+        window.clearInterval(intervalTreat);
+        flagForTreat  = true;
         score= score+50;
+    }
+    if(pointsBoard[pacman.i][pacman.j]==8) {
+        addLife();
+    }
+    if(pointsBoard[pacman.i][pacman.j]==9) {
+        time = time + 10;
     }
     board[pacman.i][pacman.j]=2;
     var currentTime=new Date();
-    time_elapsed=parseInt(time - ((currentTime-start_time)/1000));
+    time_elapsed = parseInt(time - ((currentTime-start_time)/1000));
     if(time_elapsed <= 0) {
         gameOver();
     }
-    // if(score>=20&&time_elapsed<=10) //this is weird
-    // {
-    //     pac_color="green";
-    // }
     // if(score==50)
     // {
     //     window.clearInterval(interval);
@@ -518,12 +551,6 @@ function UpdateTreat(){
             flag = false;
         }
     }
-    if(board[treat.i][treat.j] == 1){
-        flagForTreat = 1;
-    }
-    else{
-        flagForTreat = 0;
-    }
     board[treat.i][treat.j]=5;
 }
 
@@ -555,6 +582,15 @@ function gameOver() {
     themeSong.pause();
     var gameOverSong = document.getElementById("gameOverSound");
     var gameOverTxt = document.getElementById("gameOverText");
+    if(life == 0){
+        gameOverTxt.innerHTML = "You lost!";
+    }
+    else if(score < 150){
+        gameOverTxt.innerHTML = "You can do better...";
+    }
+    else{
+        gameOverTxt.innerHTML = "We have a winner!";
+    }
     gameOverTxt.style.display = 'block';
     gameOverSong.play();
     setTimeout(function() {
@@ -583,8 +619,41 @@ function restoreLife() {
         if(hearts[i].style.display == 'none') {
             hearts[i].style.display = 'inline-block';
         }
+        if(i >= 3) {
+            $("#life img:last-child").remove();
+        }
     }
 }
 function addLife() {
-    $('.heart').append('<img class="heart" src="heart.png" alt="heart">');
+    $('#life').append('<img class="heart" src="heart.png" alt="heart">');
+    life++;
+}
+
+function setLifeAdder() {
+    var cell = isEmpty();
+    if((time_elapsed < time * 0.8) && cell != null) {
+        cell = findRandomEmptyCell(pointsBoard);
+        pointsBoard[cell[0]][cell[1]] = 8;
+        window.clearInterval(intervalAid);
+    }
+}
+
+function setTimeAdder() {
+    var cell = isEmpty();
+    if((time_elapsed < time * 0.5) && cell != null) {
+        cell = findRandomEmptyCell(pointsBoard);
+        pointsBoard[cell[0]][cell[1]] = 9;
+        window.clearInterval(intervalClock);
+    }
+}
+
+function isEmpty() {
+    for(var i = 0; i < 10; i++) {
+        for(var j = 0; j < 10; j++) {
+            if(pointsBoard[i][j] == 0) {
+                return[i,j];
+            }
+        }
+    }
+    return null;
 }

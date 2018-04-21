@@ -30,6 +30,7 @@
                     <p>Sivan Rejensky - ID: 308465954</p>
                 </div>
             </div>
+            <!-- Canvas page -->
         <div id="canvas-div" class="page">
             <header>
                 <div id="score" class="game-data">Score: <input id="lblScore" type="text" /></div>
@@ -40,9 +41,18 @@
                     <img class="heart" src="heart.png" alt="heart">
                 </div>
             </header>
-            <input style="display: none" id="lblLife" type="text" />
-        <canvas id="canvas" height="600" width="600"></canvas>
-            <span id="gameOverText">Game Over!</span>
+            <div id="canvas-section">
+                <canvas id="canvas" class = "canvas-item" height="600" width="600"></canvas>
+                <div id = "map" class = "canvas-item">
+                    <ul>
+                        <li id="first" class="points"><span> 5 points</span></li>
+                        <li id="second" class="points"><span> 15 points</span></li>
+                        <li id="third" class="points"><span> 25 points</span></li>
+                        <img id="candy-map" src="candy.png"> 50 points
+                    </ul>
+                </div>
+            </div>
+            <span id="gameOverText"></span>
             <audio id="theme">
                 <source src="pacmanTheme.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
