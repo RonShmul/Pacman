@@ -97,75 +97,38 @@ function start(){
         keysDown[e.keyCode] = false;
     }, false);
     interval=setInterval(UpdatePosition, 100);
-    intervalMon1 = setInterval( UpdatePositionForMonster1, 300);
-    intervalMon2 = setInterval( UpdatePositionForMonster2, 300);
-    intervalMon3 = setInterval( UpdatePositionForMonster3, 300);
+    intervalMon1 = setInterval( UpdatePositionForMonster1, 400);
+    if(numOfMonsters >= 2){
+        intervalMon2 = setInterval( UpdatePositionForMonster2, 400);
+    }
+    if(numOfMonsters == 3){
+        intervalMon3 = setInterval( UpdatePositionForMonster3, 400);
+    }
     intervalTreat = setInterval(UpdateTreat, 300);
 }
 
 function placeSpecials(){
-    var randomPlace = Math.random();
-    if(randomPlace<0.25){
-        monster1.i = 0;
-        monster1.j = 9;
-        monster2.i = 9;
-        monster2.j = 0;
-        monster3.i = 9;
-        monster3.j = 9;
-        treat.i = 0;
-        treat.j = 0;
-        board[0][0] = 5;
-        board[0][9] = 3;
-        board[9][0] = 3;
-        board[9][9] = 3;
-    }
-    else if(randomPlace<0.5){
-        monster1.i = 0;
-        monster1.j = 0;
-        monster2.i = 9;
-        monster2.j = 0;
-        monster3.i = 9;
-        monster3.j = 9;
-        treat.i = 0;
-        treat.j = 9;
-        board[0][0] = 3;
-        board[0][9] = 5;
-        board[9][0] = 3;
-        board[9][9] = 3;
-    }
-    else if(randomPlace<0.75){
-        monster1.i = 0;
-        monster1.j = 0;
+    monster1.i = 0;
+    monster1.j = 0;
+    treat.i = 9;
+    treat.j = 9;
+    board[0][0] = 3;
+    board[9][9] = 5;
+    if(numOfMonsters >= 2){
         monster2.i = 0;
         monster2.j = 9;
-        monster3.i = 9;
-        monster3.j = 9;
-        treat.i = 9;
-        treat.j = 0;
-        board[0][0] = 3;
         board[0][9] = 3;
-        board[9][0] = 5;
-        board[9][9] = 3;
-    }
-    else{
-        monster1.i = 0;
-        monster1.j = 0;
-        monster2.i = 0;
-        monster2.j = 9;
-        monster3.i = 9;
-        monster3.j = 0;
-        treat.i = 9;
-        treat.j = 9;
-        board[0][0] = 3;
-        board[0][9] = 3;
-        board[9][0] = 3;
-        board[9][9] = 5;
+        if(numOfMonsters == 3){
+            monster3.i = 9;
+            monster3.j = 0;
+            board[9][0] = 3;
+        }
     }
 }
 
 function placeSnacks() {
-    var sPoints = parseInt(numOfPoints * 0.6);
-    var mPoints = parseInt(numOfPoints * 0.3);
+    var sPoints = parseInt(numOfPoints*0.6);
+    var mPoints = parseInt(numOfPoints*0.3);
     var lPoints = numOfPoints - mPoints - sPoints;
     var emptyCell;
     while(sPoints > 0) {
@@ -178,14 +141,14 @@ function placeSnacks() {
     while(mPoints > 0) {
         emptyCell = findRandomEmptyCell(pointsBoard);
         if(board[emptyCell[0]][emptyCell[1]] == 0) {
-            pointsBoard[emptyCell[0]][emptyCell[1]] = 1;
+            pointsBoard[emptyCell[0]][emptyCell[1]] = 6;
             mPoints--;
         }
     }
     while(lPoints > 0) {
         emptyCell = findRandomEmptyCell(pointsBoard);
         if(board[emptyCell[0]][emptyCell[1]] == 0) {
-            pointsBoard[emptyCell[0]][emptyCell[1]] = 1;
+            pointsBoard[emptyCell[0]][emptyCell[1]] = 7;
             lPoints--;
         }
     }
@@ -237,6 +200,7 @@ function Draw() {
     lblScore.value = score;
     lblTime.value = time_elapsed;
     lblLife.value = life;
+    var monCount =1;
     for (var i = 0; i < 10; i++) {
         for (var j = 0; j < 10; j++) {
             var center = new Object();
@@ -249,18 +213,27 @@ function Draw() {
                 DrawWalls(center);
             }
             else if(board[i][j] == 3){
-                DrawMonster(center);
+                var pic = "monster" + monCount + ".svg";
+                DrawMonster(center, pic);
+                monCount++;
             }
             else if(board[i][j] == 5){
                 DrawTreat(center);
-            } else if (pointsBoard[i][j] == 1) {   //TODO: change everything wth snacks!!!
-                DrawBlackCircle(center);
+            }
+            else if (pointsBoard[i][j] == 1) {   //TODO: change everything wth snacks!!!
+                var fill = "white";
+                var size = 10;
+                DrawSnacks(center, fill, size);
             }
             else if (pointsBoard[i][j] == 6) {
-                DrawBlackCircle(center);
+                var fill = "GreenYellow";
+                var size = 14;
+                DrawSnacks(center, fill, size);
             }
             else if (pointsBoard[i][j] == 7) {
-                DrawBlackCircle(center);
+                var fill = "RosyBrown";
+                var size = 16;
+                DrawSnacks(center, fill, size);
             }
             }
         }
@@ -319,10 +292,10 @@ function DrawPacman(center) {
 }
 
 /***draw regular snacks */
-function DrawBlackCircle(center) {
+function DrawSnacks(center, fill, size) {
     context.beginPath();
-    context.arc(center.x, center.y, 10, 0, 2 * Math.PI); // circle
-    context.fillStyle = "white"; //color
+    context.arc(center.x, center.y, size, 0, 2 * Math.PI); // circle
+    context.fillStyle = fill; //color
     context.fill();
 }
 
@@ -335,13 +308,13 @@ function DrawWalls(center) {
 }
 
 /** draw monster */
-function DrawMonster(center){
+function DrawMonster(center , pic){
     context.beginPath();
     var img = new Image();
+    img.src = pic;
     img.onload = function () {
         context.drawImage(img, center.x-30, center.y-30 , 55 , 55);
     }
-    img.src = "monster1.svg";
 }
 
 /**Draw special treat */
@@ -389,7 +362,15 @@ function UpdatePosition() {
     }
     if(pointsBoard[pacman.i][pacman.j]==1)
     {
-        score++;
+        score=score+5;
+    }
+    if(pointsBoard[pacman.i][pacman.j]==6)
+    {
+        score=score+15;
+    }
+    if(pointsBoard[pacman.i][pacman.j]==7)
+    {
+        score=score+25;
     }
     if(board[pacman.i][pacman.j]==5)
     {
@@ -402,15 +383,15 @@ function UpdatePosition() {
     if(time_elapsed <= 0) {
         gameOver();
     }
-    if(score>=20&&time_elapsed<=10) //this is weird
-    {
-        pac_color="green";
-    }
-    if(score==50)
-    {
-        window.clearInterval(interval);
-        window.alert("Game completed");
-    }
+    // if(score>=20&&time_elapsed<=10) //this is weird
+    // {
+    //     pac_color="green";
+    // }
+    // if(score==50)
+    // {
+    //     window.clearInterval(interval);
+    //     window.alert("Game completed");
+    // }
     else
     {
         Draw();
@@ -545,8 +526,10 @@ function UpdateTreat(){
 
 function restartBoard(){
     board[monster1.i][monster1.j] = 0;
-    board[monster2.i][monster2.j] = 0;
-    board[monster3.i][monster3.j] = 0;
+    if(numOfMonsters>=2)
+        board[monster2.i][monster2.j] = 0;
+    if(numOfMonsters==3)
+        board[monster3.i][monster3.j] = 0;
     board[treat.i][treat.j] = 0;
     placeSpecials();
     board[pacman.i][pacman.j] = 0;
@@ -554,7 +537,13 @@ function restartBoard(){
     pacman.i = newPac[0];
     pacman.j = newPac[1];
     if(pointsBoard[pacman.i][pacman.j] == 1){
-        score++;
+        score= score +5;
+    }
+    if(pointsBoard[pacman.i][pacman.j] == 6){
+        score= score +15;
+    }
+    if(pointsBoard[pacman.i][pacman.j] == 7){
+        score= score +25;
     }
     board[pacman.i][pacman.j] = 2;
 }
