@@ -48,6 +48,8 @@ function start(){
     numOfMonsters = monsterInput.value;
     numOfPoints = pointInput.value;
     time = timeInput.value;
+    //initial life if needed
+    restoreLife();
     //initial the board with zeros
     for (var i = 0; i < 10; i++) {
         board[i] = new Array();
@@ -157,11 +159,12 @@ function placeSnacks() {
 
 /**start the app*/
 function startGame() {
+    themeSong = document.getElementById("theme");
+    themeSong.play();
     toggle('canvas-div');
     start();
     return false;
 }
-
 /***fill up the board with snacks***/
 function findRandomEmptyCell(someBoard){
     var i = Math.floor(Math.random() * 10);
@@ -379,7 +382,7 @@ function UpdatePosition() {
     }
     board[pacman.i][pacman.j]=2;
     var currentTime=new Date();
-    time_elapsed=time - ((currentTime-start_time)/1000);
+    time_elapsed=parseInt(time - ((currentTime-start_time)/1000));
     if(time_elapsed <= 0) {
         gameOver();
     }
@@ -543,12 +546,20 @@ function restartBoard(){
 }
 
 function gameOver() {
+    themeSong.pause();
+    var gameOverSong = document.getElementById("gameOverSound");
+    var gameOverTxt = document.getElementById("gameOverText");
+    gameOverTxt.style.display = 'block';
+    gameOverSong.play();
+    setTimeout(function() {
+        gameOverTxt.style.display = 'none';
+        toggle('enter-game');
+    }, 3000);
     window.clearInterval(interval);
     window.clearInterval(intervalMon1);
     window.clearInterval(intervalMon2);
     window.clearInterval(intervalMon3);
     window.clearInterval(intervalTreat);
-    window.alert("Game Over!!!");
 }
 
 function reduceLife() {
@@ -559,4 +570,15 @@ function reduceLife() {
             break;
         }
     }
+}
+function restoreLife() {
+    var hearts = document.getElementsByClassName("heart");
+    for(var i = hearts.length-1; i>= 0; i--) {
+        if(hearts[i].style.display == 'none') {
+            hearts[i].style.display = 'inline-block';
+        }
+    }
+}
+function addLife() {
+    $('.heart').append('<img class="heart" src="heart.png" alt="heart">');
 }
