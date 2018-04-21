@@ -515,12 +515,6 @@ function UpdateTreat(){
             flag = false;
         }
     }
-    if(board[treat.i][treat.j] == 1){
-        flagForTreat = 1;
-    }
-    else{
-        flagForTreat = 0;
-    }
     board[treat.i][treat.j]=5;
 }
 
