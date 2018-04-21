@@ -49,7 +49,6 @@ header {
     font-family: "Jua", sans-serif;
     padding: 10px;
     font-size: 20pt;
-    width: 30%;
 }
 
 img.heart {
@@ -69,14 +68,69 @@ canvas {
     display: block;
     margin:10px 200px 10px 200px;
 }
+#canvas-section{
+    position: relative;
+    display: block;
+    width: 100%;
+}
+.canvas-item{
+    position: relative;
+    display: inline-block;
+    color: #b7b7b7;
+    font-family: "Jua", sans-serif;
+    font-size: 20pt;
+    vertical-align: middle;
+}
 
+.points{
+    margin: 20px;
+}
+
+
+#first {
+    color: white;
+}
+#first span{
+    color: #b7b7b7;
+}
+#second span{
+    color: #b7b7b7;
+}
+#second {
+    color: GreenYellow;
+}
+#third span{
+    color: #b7b7b7;
+}
+#third{
+    color: RosyBrown;
+}
+
+#candy{
+    list-style-type: none;
+}
+/*#candy::before{*/
+    /*content: '';*/
+    /*display: inline-block;*/
+    /*height: 30px;*/
+    /*width: 30px;*/
+    /*background-image: url("candy.png");*/
+/*}*/
+/*#candy{*/
+    /*list-style-image: url("candy.png");*/
+/*}*/
+#candy-map {
+    width: 20px;
+    height: 20px;
+}
 #gameOverText {
     position: absolute;
     display: none;
     width: 100%;
     top: 50%;
     font-family: "Jua", sans-serif;
-    font-size: 40pt;
+    font-size: 55pt;
     color: red;
     text-align: center;
+    text-shadow: 2px 2px black;
 }
