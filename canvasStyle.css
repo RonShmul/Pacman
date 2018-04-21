@@ -69,3 +69,14 @@ canvas {
     display: block;
     margin:10px 200px 10px 200px;
 }
+
+#gameOverText {
+    position: absolute;
+    display: none;
+    width: 100%;
+    top: 50%;
+    font-family: "Jua", sans-serif;
+    font-size: 40pt;
+    color: red;
+    text-align: center;
+}
