@@ -14,23 +14,21 @@
     <div class="wrapper">
         <!-- menu -->
         <nav>
+            <span class="navlink" id="the-user" style="color: white;">Hello, guest</span>
             <a href="#" class="navlink" id="about_link">About</a>
-            <a href="#" class="navlink" onclick="toggle('login');">Login</a>
-            <a href="#" class="navlink" onclick="toggle('sign-up');">Sign Up</a>
-            <span class="navlink" id="the-user" style="color: white;">Hello, Guest</span>
+            <a href="#" class="navlink" id="login-link" onclick="toggle('login');">Login</a>
+            <a href="#" class="navlink" id="register-link" onclick="toggle('sign-up');">Sign Up</a>
+            <a href="#" class="navlink" id="logout-link" onclick="logOut();">Log Out</a>
         </nav>
-
-        <!--about model dialog--->
-        <div id="about_id" class="about">
-            <!-- Modal content -->
-            <div class="about-content">
-                <span id="close_id" class="close">&times;</span>
+        <!-- about modal dialog -->
+        <dialog id="about_id">
+            <span id="close_id" class="close">&times;</span>
+            <div id="about-content">
                 <p>The developers of this pac-man game are:</p>
                 <p>Ron Shmulinson - ID: 308089671</p>
                 <p>Sivan Rejensky - ID: 308465954</p>
             </div>
-        </div>
-
+        </dialog>
         <!-- Canvas page -->
         <div id="canvas-div" class="page">
             <header>
