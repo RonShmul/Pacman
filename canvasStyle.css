@@ -65,7 +65,9 @@ img.heart {
 }
 
 canvas {
-    margin:10px 200px 10px 200px;
+    margin:30px 200px 30px 200px;
+    border-color: #2691a5;
+    border-style: solid;
 }
 #canvas-section{
     position: relative;

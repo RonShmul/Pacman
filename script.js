@@ -57,15 +57,15 @@ function start(){
         for (var j = 0; j < 10; j++) {
             board[i][j] = 0;
             pointsBoard[i][j] = 0;
-
             //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)  TODO: more walls- function
-            if((i==3 && j==3)||(i==3 && j==4)||(i==3 && j==5)||(i==6 && j==1)||(i==6 && j==2))
-            {
-                board[i][j] = 4;
-                pointsBoard[i][j] = 4;
-            }
+            // if((i==3 && j==3)||(i==3 && j==4)||(i==3 && j==5)||(i==6 && j==1)||(i==6 && j==2))
+            // {
+            //     board[i][j] = 4;
+            //     pointsBoard[i][j] = 4;
+            // }
         }
     }
+    putWalls();
     //initial monsters and treat
     placeSpecials();
     //initial pac-man and snacks
@@ -84,7 +84,7 @@ function start(){
     }, false);
     interval=setInterval(UpdatePosition, 100);
 
-    intervalMon1 = setInterval( UpdatePositionForMonster1, 400);
+    intervalMon1 = setInterval( UpdatePositionForMonster1, 300);
     if(numOfMonsters >= 2){
         intervalMon2 = setInterval( UpdatePositionForMonster2, 400);
     }
@@ -94,6 +94,33 @@ function start(){
     intervalTreat = setInterval(UpdateTreat, 300);
     intervalAid = setInterval(setLifeAdder, 450);
     intervalClock = setInterval(setTimeAdder, 450);
+}
+
+function putWalls(){
+    board[1][2] = 4;
+    pointsBoard[1][2] = 4;
+    board[1][8] = 4;
+    pointsBoard[1][8] = 4;
+    board[2][1] = 4;
+    pointsBoard[2][1] = 4;
+    board[2][2] = 4;
+    pointsBoard[2][2] = 4;
+    board[4][4] = 4;
+    pointsBoard[4][4] = 4;
+    board[5][3] = 4;
+    pointsBoard[5][3] = 4;
+    board[5][4] = 4;
+    pointsBoard[5][4] = 4;
+    board[5][5] = 4;
+    pointsBoard[5][5] = 4;
+    board[8][1] = 4;
+    pointsBoard[8][1] = 4;
+    board[7][7] = 4;
+    pointsBoard[7][7] = 4;
+    board[7][8] = 4;
+    pointsBoard[7][8] = 4;
+    board[8][7] = 4;
+    pointsBoard[8][7] = 4;
 }
 
 function placeSpecials(){
@@ -147,11 +174,6 @@ function placeSnacks() {
 
 /**start the app*/
 function startGame() {
-    var nav = document.getElementsByClassName('navlink');
-    for(var i = 0; i < nav.length; i++) {
-        nav[i].addEventListener("click", stopGame);
-    }
-
     themeSong = document.getElementById("theme");
     themeSong.play();
     toggle('canvas-div');
@@ -220,7 +242,7 @@ function Draw() {
             else if(board[i][j] == 5){
                 DrawTreat(center);
             }
-            else if (pointsBoard[i][j] == 1) {   //TODO: change everything wth snacks!!!
+            else if (pointsBoard[i][j] == 1) {
                 var fill = "white";
                 var size = 9;
                 DrawSnacks(center, fill, size);
@@ -321,6 +343,7 @@ function DrawMonster(center , pic){
     img.onload = function () {
         context.drawImage(img, center.x-30, center.y-30 , 55 , 55);
     }
+    img.src = pic;
 }
 
 /**Draw special treat */
@@ -331,6 +354,7 @@ function DrawTreat(center){
     img.onload = function () {
         context.drawImage(img, center.x-30, center.y-30 , 35 , 60);
     }
+    img.src = "candy.png";
 }
 
 function DrawAid(center) {
@@ -340,6 +364,7 @@ function DrawAid(center) {
     img.onload = function () {
         context.drawImage(img, center.x-30, center.y-30 , 55 , 55);
     }
+    img.src = "aid.svg";
 }
 function DrawClock(center) {
     context.beginPath();
@@ -348,6 +373,7 @@ function DrawClock(center) {
     img.onload = function () {
         context.drawImage(img, center.x-30, center.y-30 , 55 , 55);
     }
+    img.src = "clock.svg";
 }
 
 /***update the position */
@@ -442,10 +468,9 @@ function UpdatePositionForMonster1() {
 
 function UpdatePositionForMonster2(){
     board[monster2.i][monster2.j]=0;
-    var moves;
-    moves = Manhattan(monster2);
-    monster2.i = moves[0];
-    monster2.j = moves[1];
+    shortestPath();
+    // monster2.i = moves[0];
+    // monster2.j = moves[1];
     if(board[monster2.i][monster2.j] == 2){
         life--;
         reduceLife();
@@ -487,25 +512,25 @@ function Manhattan(anyMonster){
     var temp;
     var move;
 
-    if(anyMonster.i>0 && board[anyMonster.i-1][anyMonster.j] < 4 ){ //left
+    if(anyMonster.i>0 && board[anyMonster.i-1][anyMonster.j] != 4 ){ //left
         distance = Math.abs(pacman.i - (anyMonster.i-1)) + Math.abs(pacman.j - anyMonster.j);
         move = [anyMonster.i-1, anyMonster.j];
     }
-    if(anyMonster.i<9 && board[anyMonster.i+1][anyMonster.j] < 4 ){ //right
+    if(anyMonster.i<9 && board[anyMonster.i+1][anyMonster.j] != 4 ){ //right
         temp = Math.abs(pacman.i - (anyMonster.i+1)) + Math.abs(pacman.j - anyMonster.j);
         if(temp<distance){
             distance = temp;
             move = [anyMonster.i+1, anyMonster.j];
         }
     }
-    if(anyMonster.j>0 && board[anyMonster.i][anyMonster.j-1] < 4 ){ //up
+    if(anyMonster.j>0 && board[anyMonster.i][anyMonster.j-1] != 4 ){ //up
         temp = Math.abs(pacman.i - anyMonster.i) + Math.abs(pacman.j - (anyMonster.j-1));
         if(temp<distance){
             distance = temp;
             move = [anyMonster.i, anyMonster.j-1];
         }
     }
-    if(anyMonster.j<9 && board[anyMonster.i][anyMonster.j+1] < 4 ){ //down
+    if(anyMonster.j<9 && board[anyMonster.i][anyMonster.j+1] != 4 ){ //down
         temp = Math.abs(pacman.i - anyMonster.i) + Math.abs(pacman.j - (anyMonster.j+1));
         if(temp<distance){
             move = [anyMonster.i, anyMonster.j+1];
@@ -513,6 +538,59 @@ function Manhattan(anyMonster){
     }
     return(move);
 }
+
+function shortestPath(){
+    var xDistance = Math.abs(pacman.i - monster2.i);
+    var yDistance = Math.abs(pacman.j - monster2.j);
+    if(xDistance < yDistance){
+        goToX();
+    }else if(xDistance > yDistance){
+        goToY();
+    } else{
+        var helper= Math.random();
+        if(helper >= 0.5){
+            goToX();
+        }
+        else{
+            goToY();
+        }
+    }
+}
+
+function goToY(){
+    if(monster2.j<9 && pacman.j > monster2.j && board[monster2.i][monster2.j+1] != 4){
+        monster2.j++;
+    }
+    else if(monster2.j>0 && pacman.j < monster2.j && board[monster2.i][monster2.j-1] != 4){
+        monster2.j--;
+    }
+    else{
+        if(monster2.i<9 && board[monster2.i+1][monster2.j] != 4){
+            monster2.i++;
+        }
+        else if(monster2.i>0 && board[monster2.i-1][monster2.j] != 4){
+            monster2.i--;
+        }
+    }
+}
+
+function goToX() {
+    if(monster2.i<9 && pacman.i > monster2.i && board[monster2.i+1][monster2.j] != 4){
+        monster2.i++;
+    }
+    else if(monster2.i>0 && pacman.i < monster2.i && board[monster2.i-1][monster2.j] != 4){
+        monster2.i--;
+    }
+    else{
+        if(monster2.j<9 && board[monster2.i][monster2.j+1] != 4){
+            monster2.j++;
+        }
+        else if(monster2.j>0 && board[monster2.i][monster2.j-1] != 4){
+            monster2.j--;
+        }
+    }
+}
+
 
 function UpdateTreat(){
     var flag = true;
@@ -589,6 +667,8 @@ function gameOver() {
     window.clearInterval(intervalMon2);
     window.clearInterval(intervalMon3);
     window.clearInterval(intervalTreat);
+    window.clearInterval(intervalClock);
+    window.clearInterval(intervalAid);
 }
 
 function reduceLife() {
@@ -617,32 +697,33 @@ function addLife() {
 }
 
 function setLifeAdder() {
-    var cell = isEmpty();
-    if((time_elapsed < time * 0.8) && cell != null) {
-        cell = findRandomEmptyCell(pointsBoard);
+    if((time_elapsed <= time * 0.8) && isEmpty()) {
+        var cell = findRandomEmptyCell(pointsBoard);
         pointsBoard[cell[0]][cell[1]] = 8;
         window.clearInterval(intervalAid);
     }
 }
 
 function setTimeAdder() {
-    var cell = isEmpty();
-    if((time_elapsed < time * 0.5) && cell != null) {
-        cell = findRandomEmptyCell(pointsBoard);
+
+    if((time_elapsed <= time * 0.5) && isEmpty()) {
+        var cell = findRandomEmptyCell(pointsBoard);
         pointsBoard[cell[0]][cell[1]] = 9;
         window.clearInterval(intervalClock);
     }
 }
 
 function isEmpty() {
+    var isAvailable = false;
     for(var i = 0; i < 10; i++) {
         for(var j = 0; j < 10; j++) {
             if(pointsBoard[i][j] == 0) {
-                return[i,j];
+                isAvailable = true;
+                break
             }
         }
     }
-    return null;
+    return isAvailable;
 }
 
 function stopGame() {
@@ -656,4 +737,7 @@ function stopGame() {
     window.clearInterval(intervalMon2);
     window.clearInterval(intervalMon3);
     window.clearInterval(intervalTreat);
+    window.clearInterval(intervalAid);
+    window.clearInterval(intervalClock);
+
 }
