@@ -17,7 +17,7 @@ body {
     font-family: "Jua", sans-serif;
     padding: 10px;
     font-size: 20pt;
-    margin: 0;
+    margin: 0 0 0 40%;
     box-sizing: border-box;
     color: #b7b7b7;
     display: block;
@@ -56,7 +56,7 @@ img.heart {
     height: auto;
 }
 
-input.game-data {
+.game-data-input{
     font-size: 18pt;
     font-family: "Jua", sans-serif;
     border: none;
@@ -65,7 +65,6 @@ input.game-data {
 }
 
 canvas {
-    display: block;
     margin:10px 200px 10px 200px;
 }
 #canvas-section{
@@ -76,10 +75,13 @@ canvas {
 .canvas-item{
     position: relative;
     display: inline-block;
+    vertical-align: middle;
+}
+
+#map {
     color: #b7b7b7;
     font-family: "Jua", sans-serif;
     font-size: 20pt;
-    vertical-align: middle;
 }
 
 .points{
@@ -109,16 +111,7 @@ canvas {
 #candy{
     list-style-type: none;
 }
-/*#candy::before{*/
-    /*content: '';*/
-    /*display: inline-block;*/
-    /*height: 30px;*/
-    /*width: 30px;*/
-    /*background-image: url("candy.png");*/
-/*}*/
-/*#candy{*/
-    /*list-style-image: url("candy.png");*/
-/*}*/
+
 #candy-map {
     width: 20px;
     height: 20px;
@@ -133,4 +126,22 @@ canvas {
     color: red;
     text-align: center;
     text-shadow: 2px 2px black;
+}
+
+#new-game-button-side {
+    position: relative;
+    width: 100%;
+    margin: 10px;
+    padding: 5px;
+    font-size: 25pt;
+    background: none;
+    border: none;
+    font-family: "Jua", sans-serif;
+    color: #b7b7b7;
+    outline: 0;
+}
+
+#new-game-button-side:hover
+{
+    color:white;
 }

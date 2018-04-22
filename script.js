@@ -14,6 +14,8 @@ var intervalMon1;
 var intervalMon2;
 var intervalMon3;
 var intervalTreat;
+var intervalAid;
+var intervalClock;
 var lastKey = 0;
 var monster1;
 var monster2;
@@ -40,7 +42,6 @@ function start(){
     pointsBoard = new Array();
     score = 0;
     pac_color="gold";
-    var cnt = 100;
     start_time= new Date();
     life = 3;
     flagForTreat = false;
@@ -74,22 +75,6 @@ function start(){
     pacman.j=pacPlace[1];
     placeSnacks();
 
-    //var randomNum = Math.random();
-    // if (randomNum <= 1.0 * food_remain / cnt) {
-    //     food_remain--;
-    //     pointsBoard[i][j] = 1;
-    // } else if (randomNum < 1.0 * (pacman_remain + food_remain) / cnt) {
-
-    //     pacman_remain--;
-    //     board[i][j] = 2;
-    // }
-    cnt--;
-    // while(food_remain>0){
-    //     var emptyCell = findRandomEmptyCell(pointsBoard);
-    //     pointsBoard[emptyCell[0]][emptyCell[1]] = 1;
-    //     food_remain--;
-    // }
-
     keysDown = {};
     addEventListener("keydown", function (e) {
         keysDown[e.keyCode] = true;
@@ -98,8 +83,7 @@ function start(){
         keysDown[e.keyCode] = false;
     }, false);
     interval=setInterval(UpdatePosition, 100);
-    intervalAid = setInterval(setLifeAdder, 100);
-    intervalClock = setInterval(setTimeAdder, 100);
+
     intervalMon1 = setInterval( UpdatePositionForMonster1, 400);
     if(numOfMonsters >= 2){
         intervalMon2 = setInterval( UpdatePositionForMonster2, 400);
@@ -108,6 +92,8 @@ function start(){
         intervalMon3 = setInterval( UpdatePositionForMonster3, 400);
     }
     intervalTreat = setInterval(UpdateTreat, 300);
+    intervalAid = setInterval(setLifeAdder, 450);
+    intervalClock = setInterval(setTimeAdder, 450);
 }
 
 function placeSpecials(){
@@ -157,11 +143,15 @@ function placeSnacks() {
             lPoints--;
         }
     }
-
 }
 
 /**start the app*/
 function startGame() {
+    var nav = document.getElementsByClassName('navlink');
+    for(var i = 0; i < nav.length; i++) {
+        nav[i].addEventListener("click", stopGame);
+    }
+
     themeSong = document.getElementById("theme");
     themeSong.play();
     toggle('canvas-div');
@@ -423,11 +413,6 @@ function UpdatePosition() {
     if(time_elapsed <= 0) {
         gameOver();
     }
-    // if(score==50)
-    // {
-    //     window.clearInterval(interval);
-    //     window.alert("Game completed");
-    // }
     else
     {
         Draw();
@@ -580,6 +565,8 @@ function restartBoard(){
 
 function gameOver() {
     themeSong.pause();
+    themeSong.currentTime = 0;
+
     var gameOverSong = document.getElementById("gameOverSound");
     var gameOverTxt = document.getElementById("gameOverText");
     if(life == 0){
@@ -656,4 +643,17 @@ function isEmpty() {
         }
     }
     return null;
+}
+
+function stopGame() {
+    document.getElementById("login-form").reset();
+    document.getElementById("register-form").reset();
+    restartBoard();
+    themeSong.pause();
+    themeSong.currentTime = 0;
+    window.clearInterval(interval);
+    window.clearInterval(intervalMon1);
+    window.clearInterval(intervalMon2);
+    window.clearInterval(intervalMon3);
+    window.clearInterval(intervalTreat);
 }
