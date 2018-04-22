@@ -16,6 +16,7 @@ var intervalMon3;
 var intervalTreat;
 var intervalAid;
 var intervalClock;
+var intervalForDrawing;
 var lastKey = 0;
 var monster1;
 var monster2;
@@ -57,12 +58,6 @@ function start(){
         for (var j = 0; j < 10; j++) {
             board[i][j] = 0;
             pointsBoard[i][j] = 0;
-            //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)  TODO: more walls- function
-            // if((i==3 && j==3)||(i==3 && j==4)||(i==3 && j==5)||(i==6 && j==1)||(i==6 && j==2))
-            // {
-            //     board[i][j] = 4;
-            //     pointsBoard[i][j] = 4;
-            // }
         }
     }
     putWalls();
@@ -94,33 +89,40 @@ function start(){
     intervalTreat = setInterval(UpdateTreat, 300);
     intervalAid = setInterval(setLifeAdder, 450);
     intervalClock = setInterval(setTimeAdder, 450);
+    //intervalForDrawing = setInterval(Draw, 5);
 }
 
+function setDrawing(){
+    for (var i = 0; i < 10; i++) {
+        for (var j = 0; j < 10; j++) {
+            var center = new Object();
+            center.x = i * 60 + 30;
+            center.y = j * 60 + 30;
+            if(board[i][j] == 3){
+                if(monster1.i == i && monster1.j == j){
+                    DrawMonster(center, "monster1.svg");
+                }
+                if(monster2.i == i && monster2.j == j){
+                    DrawMonster(center, "monster2.svg");
+                }
+                if(monster3.i == i && monster3.j == j){
+                    DrawMonster(center, "monster3.svg");
+                }
+            }
+        }
+    }
+}
 function putWalls(){
     board[1][2] = 4;
     pointsBoard[1][2] = 4;
-    board[1][8] = 4;
-    pointsBoard[1][8] = 4;
-    board[2][1] = 4;
-    pointsBoard[2][1] = 4;
-    board[2][2] = 4;
-    pointsBoard[2][2] = 4;
     board[4][4] = 4;
     pointsBoard[4][4] = 4;
-    board[5][3] = 4;
-    pointsBoard[5][3] = 4;
     board[5][4] = 4;
     pointsBoard[5][4] = 4;
-    board[5][5] = 4;
-    pointsBoard[5][5] = 4;
-    board[8][1] = 4;
-    pointsBoard[8][1] = 4;
-    board[7][7] = 4;
-    pointsBoard[7][7] = 4;
     board[7][8] = 4;
     pointsBoard[7][8] = 4;
-    board[8][7] = 4;
-    pointsBoard[8][7] = 4;
+    board[8][8] = 4;
+    pointsBoard[8][8] = 4;
 }
 
 function placeSpecials(){
@@ -444,7 +446,7 @@ function UpdatePosition() {
         Draw();
     }
 }
-
+var count = 0;
 function UpdatePositionForMonster1() {
     board[monster1.i][monster1.j] = 0;
     var moves;
@@ -543,10 +545,22 @@ function shortestPath(){
     var xDistance = Math.abs(pacman.i - monster2.i);
     var yDistance = Math.abs(pacman.j - monster2.j);
     if(xDistance < yDistance){
-        goToX();
-    }else if(xDistance > yDistance){
-        goToY();
-    } else{
+        if(xDistance ==0){
+            goToY();
+        }
+        else{
+            goToX();
+        }
+    }
+    else if(xDistance > yDistance){
+        if(yDistance ==0){
+            goToX();
+        }
+        else {
+            goToY();
+        }
+    }
+    else{
         var helper= Math.random();
         if(helper >= 0.5){
             goToX();
@@ -657,6 +671,7 @@ function gameOver() {
         gameOverTxt.innerHTML = "We have a winner!";
     }
     gameOverTxt.style.display = 'block';
+    gameOverSong.currentTime = 0;
     gameOverSong.play();
     setTimeout(function() {
         gameOverTxt.style.display = 'none';
