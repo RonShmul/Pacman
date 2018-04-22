@@ -139,6 +139,11 @@ function check_login() {
 $("#login-form").submit(function() {
     if (check_login()) {
         document.getElementById("login-form").reset();
+        document.getElementById("register-form").reset();
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('register-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'inline-block';
+
         toggle('enter-game');
         $("#login-error").hide();
         $("nav").show();
@@ -168,6 +173,11 @@ $("#register-form").submit(function() {
     if (uError == false && fError == false && lError == false && pError == false && eError == false) {
         getRegisterValues();
         $("nav").show();
+        document.getElementById("login-form").reset();
+        document.getElementById("register-form").reset();
+        document.getElementById('login-link').style.display = 'none';
+        document.getElementById('register-link').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'inline-block';
         return false;
     } else {
         return false;
@@ -210,10 +220,10 @@ function getRegisterValues() {
 function updateCurrentUser(newUser) {
     currentUser = newUser;
     if (currentUser == null) {
-        document.getElementById('the-user').innerHTML = "hello, Guest";
+        document.getElementById('the-user').innerHTML = "Hello, guest";
     }
     else {
-        document.getElementById('the-user').innerHTML = "hello, " + currentUser.fname + " " + currentUser.lname;
+        document.getElementById('the-user').innerHTML = "Hello, " + currentUser.fname + " " + currentUser.lname;
     }
 }
 var about = document.getElementById('about_id');
@@ -221,15 +231,33 @@ var btn = document.getElementById("about_link");
 var close_btn = document.getElementById("close_id");
 
 btn.onclick = function() {
-    about.style.display = "block";
+    //about.style.display = "block";
+    about.showModal();
 };
 
 close_btn.onclick = function() {
-    about.style.display = "none";
+    //about.style.display = "none";
+    about.close();
 };
 
 window.onclick = function(event) {
     if (event.target == about) {
-        about.style.display = "none";
+       // about.style.display = "none";
+        about.close();
     }
 };
+
+function logOut() {
+    toggle('welcome');
+    updateCurrentUser(null);
+    document.getElementById('register-link').style.display = 'inline-block';
+    document.getElementById('login-link').style.display = 'inline-block';
+    document.getElementById('logout-link').style.display = 'none';
+
+    var elements = document.getElementsByClassName("navlink");
+    for (var i = 0; i < elements.length; i++) {
+        elements[i].style.width="23.5%";
+    }
+
+    stopGame();
+}
