@@ -127,3 +127,21 @@ canvas {
     text-align: center;
     text-shadow: 2px 2px black;
 }
+
+#new-game-button-side {
+    position: relative;
+    width: 100%;
+    margin: 10px;
+    padding: 5px;
+    font-size: 25pt;
+    background: none;
+    border: none;
+    font-family: "Jua", sans-serif;
+    color: #b7b7b7;
+    outline: 0;
+}
+
+#new-game-button-side:hover
+{
+    color:white;
+}
