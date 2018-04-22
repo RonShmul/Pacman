@@ -266,3 +266,16 @@ nav {
     color: red;
     font-family: "Jua", sans-serif;
 }
+
+footer {
+    color: white;
+    bottom: 0;
+    height: auto;
+    width: 100%;
+    font-family: "Jua", sans-serif;
+    font-size: 20pt;
+    text-align: center;
+    vertical-align: bottom;
+    margin-bottom: 0;
+    display: block;
+}

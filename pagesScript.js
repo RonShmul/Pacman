@@ -1,3 +1,4 @@
+
 var currentUser;
 var userArray = [{username: "a",
     password: "a",
@@ -219,16 +220,16 @@ var about = document.getElementById('about_id');
 var btn = document.getElementById("about_link");
 var close_btn = document.getElementById("close_id");
 
-// btn.onclick = function() {
-//     about.style.display = "block";
-// };
-//
-// close_btn.onclick = function() {
-//     about.style.display = "none";
-// };
-//
-// window.onclick = function(event) {
-//     if (event.target == about) {
-//         about.style.display = "none";
-//     }
-// };
+btn.onclick = function() {
+    about.style.display = "block";
+};
+
+close_btn.onclick = function() {
+    about.style.display = "none";
+};
+
+window.onclick = function(event) {
+    if (event.target == about) {
+        about.style.display = "none";
+    }
+};
